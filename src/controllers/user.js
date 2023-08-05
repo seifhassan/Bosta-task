@@ -52,7 +52,6 @@ class UserService {
             return next({ message: 'User not found' });
         }
         const valid = user.comparePassword(password);
-
         if (!valid) {
             return next({ message: 'UNAUTHENTICATED to login' });
         }

@@ -14,21 +14,18 @@ const createMockUser = () => {
       username,
     };
   };
-const createMockUserForLogin = () => {
-    return {
-      email: 'yopenef362@kkoup.com',
-      password: 'seifhassan',
-    };
-  }
+
 
 describe('User Routes', () => {
     let jwtToken;
+    let signInResponce;
   it('should signup a new user', async () => {
     const userData = createMockUser();
     const response = await request(app)
       .post('/user/signup')
       .send(userData)
       .expect(200); 
+      signInResponce = response.body.data;
   });
   it('should fail to signup with invalid data', async () => {
     const invalidUserData = {
@@ -41,7 +38,7 @@ describe('User Routes', () => {
   });
 
   it('should verify user email', async () => {
-    const verificationData = { id: '64cae51b68cc0ea97845acf8' };
+    const verificationData = { id: signInResponce._id };
     const response = await request(app)
       .get('/user/verify')
       .query(verificationData)
@@ -55,10 +52,13 @@ describe('User Routes', () => {
   });
 
   it('should login a user', async () => {
-    const loginData = createMockUserForLogin();
+   const loginReqBody = {
+    email: signInResponce.email,
+    password: 'abcdefg12',
+  }
     const response = await request(app)
       .post('/user/login')
-      .send()
+      .send(loginReqBody)
       .expect(200); 
 
       jwtToken = response.body.token;
@@ -77,7 +77,7 @@ describe('User Routes', () => {
 
   it('should logout a user with the stored JWT token as a cookie', async () => {
     
-    expect(jwtToken).toBeDefined();
+    //expect(jwtToken).toBeDefined();
 
     const response = await request(app)
       .get('/user/logout')

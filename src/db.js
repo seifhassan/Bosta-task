@@ -10,7 +10,6 @@ module.exports = async (URL) => {
         console.log('could not connect to DB', err.message);
         return;
     }
-    console.log('Database connected');
 };
 
   

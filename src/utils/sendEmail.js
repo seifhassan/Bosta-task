@@ -38,7 +38,7 @@ const sendStatusChangeNotificationSingup = async (email, verificationLink) => {
         };
 
         await transporter.sendMail(mailOptions);
-        console.log(`Notification email sent to ${email}`);
+       
     } catch (err) {
         console.log(`Error sending notification email to ${email}: ${err.message}`);
     }

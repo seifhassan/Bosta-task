@@ -13,12 +13,10 @@ const { PORT } = process.env;
 
 const app = express();
 
-
 app.use(express.json());
 app.use(router);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerOptions));
-
 
 async function main() {
     try {
@@ -35,10 +33,14 @@ app.use((err, req, res, next) => {
     });
     next();
 });
-startUrlChecker();
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+// Only start the server if not in a test environment
+if (process.env.NODE_ENV !== 'test') {
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+}
 
 main();
+
+module.exports = app;
